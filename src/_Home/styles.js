@@ -8,14 +8,14 @@ export const Header = styled.header`
   font-weight: 700;
 `;
 
-export const List = styled.header`
+export const List = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 20px;
 `;
 
-export const Item = styled.header`
+export const Item = styled.div`
   margin: 12px;
   padding: 12px 18px;
   border: solid 1px #acacac;
