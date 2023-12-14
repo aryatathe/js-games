@@ -84,4 +84,12 @@ export const CellContent = styled.div`
 
 export const ResetButton = styled.button`
   margin-top: 16px;
+  padding: 4px 12px;
+  border: 0;
+  border-radius: 8px;
+  outline: none;
+  background: #f1bd98;
+  font-size: 16px;
+  font-weight: 500;
+  cursor: pointer;
 `;
