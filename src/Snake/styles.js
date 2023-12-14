@@ -21,12 +21,40 @@ const ANGLES = {
 };
 
 export const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
+`;
+
+export const Header = styled.div`
+  margin: 20px 0;
+  font-size: 24px;
+  font-weight: 500;
+  color: #afafaf;
+
+  span {
+    &.green {
+      color: lightgreen;
+    }
+    &.blue {
+      color: lightblue;
+    }
+    &.yellow {
+      color: yellow;
+    }
+  }
+
+  small {
+    position: relative;
+    bottom: 10px;
+  }
 `;
 
 export const Row = styled.div`
   display: flex;
-  margin: 2px;
+  margin: 1px;
 `;
 
 export const Cell = styled.div`
@@ -36,6 +64,7 @@ export const Cell = styled.div`
   width: 20px;
   height: 20px;
   margin: 0 1px;
+  border-radius: 2px;
   background: #4a4a48;
 `;
 
@@ -51,4 +80,8 @@ export const CellContent = styled.div`
     Object.entries(CELL_STYLES)
       .map(([key, val]) => `${key}: ${val[type] || val.default};`)
       .join(" ")};
+`;
+
+export const ResetButton = styled.button`
+  margin-top: 16px;
 `;

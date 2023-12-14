@@ -1,19 +1,23 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 
-import { loadSnake, moveSnake } from "./logic";
+import { loadSnake, moveSnake, placeItem } from "./logic";
 
-import { Wrapper, Row, Cell, CellContent } from "./styles";
+import { Wrapper, Header, Row, Cell, CellContent, ResetButton } from "./styles";
 
 const Snake = () => {
-  const [rows] = useState(15);
-  const [cols] = useState(15);
+  const [rows] = useState(20);
+  const [cols] = useState(20);
+
+  const [itemL, setItemL] = useState("");
+  const [itemV, setItemV] = useState("");
+  const [failSpot, setFailSpot] = useState("");
+
   const [snake, setSnake] = useState([]);
   const [dir, setDir] = useState("right");
   const [tickRate, setTickRate] = useState(120);
-  const [failSpot, setFailSpot] = useState("");
-  const [itemL, setItemL] = useState("");
-  const [itemV, setItemV] = useState("");
+
+  const [queueTurn, setQueueTurn] = useState(false);
 
   console.log(snake, failSpot);
 
@@ -23,16 +27,7 @@ const Snake = () => {
 
   useEffect(() => {
     if (itemL) return;
-    for (;;) {
-      const x = Math.floor(rows * Math.random());
-      const y = Math.floor(cols * Math.random());
-      let key = `${x}-${y}`;
-      if (snake.includes(key) || itemV === key) continue;
-      else {
-        setItemL(key);
-        break;
-      }
-    }
+    setItemL(placeItem({ offLimits: [...snake, itemV], rows, cols }));
   }, [itemL]);
 
   useEffect(() => {
@@ -64,6 +59,8 @@ const Snake = () => {
         setItemV,
         setTickRate,
         setFailSpot,
+        setDir,
+        queueTurn,
       });
     }, tickRate);
 
@@ -73,18 +70,7 @@ const Snake = () => {
   const handleInput = (e) => {
     const newDir = e.key.substr(5).toLowerCase();
     if (!["left", "right", "up", "down"].includes(newDir)) return;
-    setDir((curr) => {
-      if (
-        (newDir === "up" && curr === "down") ||
-        (newDir === "down" && curr === "up") ||
-        (newDir === "left" && curr === "right") ||
-        (newDir === "right" && curr === "left")
-      ) {
-        return curr;
-      }
-      console.log(newDir, curr);
-      return newDir;
-    });
+    setQueueTurn(newDir);
   };
 
   useEffect(() => {
@@ -95,8 +81,28 @@ const Snake = () => {
     };
   }, []);
 
+  const handleReset = () => {
+    loadSnake({ setSnake });
+    setTickRate(120);
+    setFailSpot("");
+    setDir("right");
+  };
+
+  const scoreL = snake.length - 5;
+  const scoreV = (120 - tickRate) / 5;
+
   return (
     <Wrapper>
+      <Header>
+        {"( "}
+        <span className="blue">{scoreL}</span>
+        {" ) x ( "}
+        <span className="green">{scoreV}</span>
+        {" )"}
+        <small>2</small>
+        {" = "}
+        <span className="yellow">{scoreL * scoreV * scoreV}</span>
+      </Header>
       {Array(rows)
         .fill(0)
         .map((_, i) => (
@@ -128,6 +134,9 @@ const Snake = () => {
               })}
           </Row>
         ))}
+      <ResetButton disabled={!failSpot} onClick={handleReset}>
+        reset
+      </ResetButton>
     </Wrapper>
   );
 };
