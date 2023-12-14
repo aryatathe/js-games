@@ -1,55 +1,71 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 
-import { Wrapper, Row, Cell } from "./styles";
+import { loadSnake, moveSnake } from "./logic";
 
-const loadSnake = ({ setSnake }) => {
-  setSnake(["2-3", "2-4", "2-5", "2-6", "2-7", "2-8", "2-9"].slice(3));
-};
-
-const moveSnake = ({ snake, setSnake, dir, rows, cols }) => {
-  if (snake.length === 0) return;
-
-  const newSnake = snake.slice();
-
-  let [x, y] = newSnake[newSnake.length - 1].split("-");
-  x = Number(x);
-  y = Number(y);
-  if (dir === "up") {
-    x -= 1;
-    if (x < 0) x = rows - 1;
-  } else if (dir === "down") {
-    x += 1;
-    if (x === rows) x = 0;
-  } else if (dir === "left") {
-    y -= 1;
-    if (y < 0) y = cols - 1;
-  } else if (dir === "right") {
-    y += 1;
-    if (y === cols) y = 0;
-  } else {
-    return;
-  }
-
-  newSnake.shift();
-  newSnake.push(`${x}-${y}`);
-  setSnake(newSnake);
-};
+import { Wrapper, Row, Cell, CellContent } from "./styles";
 
 const Snake = () => {
-  const [rows] = useState(10);
-  const [cols] = useState(10);
-  const [dir, setDir] = useState("up");
+  const [rows] = useState(15);
+  const [cols] = useState(15);
   const [snake, setSnake] = useState([]);
+  const [dir, setDir] = useState("right");
+  const [tickRate, setTickRate] = useState(120);
+  const [failSpot, setFailSpot] = useState("");
+  const [itemL, setItemL] = useState("");
+  const [itemV, setItemV] = useState("");
+
+  console.log(snake, failSpot);
 
   useEffect(() => {
     loadSnake({ setSnake });
   }, []);
 
   useEffect(() => {
+    if (itemL) return;
+    for (;;) {
+      const x = Math.floor(rows * Math.random());
+      const y = Math.floor(cols * Math.random());
+      let key = `${x}-${y}`;
+      if (snake.includes(key) || itemV === key) continue;
+      else {
+        setItemL(key);
+        break;
+      }
+    }
+  }, [itemL]);
+
+  useEffect(() => {
+    if (itemV) return;
+    for (;;) {
+      const x = Math.floor(rows * Math.random());
+      const y = Math.floor(cols * Math.random());
+      let key = `${x}-${y}`;
+      if (snake.includes(key) || itemL === key) continue;
+      else {
+        setItemV(key);
+        break;
+      }
+    }
+  }, [itemV]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
-      moveSnake({ snake, setSnake, dir, rows, cols });
-    }, 100);
+      if (failSpot) return;
+      moveSnake({
+        snake,
+        setSnake,
+        dir,
+        rows,
+        cols,
+        itemL,
+        setItemL,
+        itemV,
+        setItemV,
+        setTickRate,
+        setFailSpot,
+      });
+    }, tickRate);
 
     return () => clearInterval(interval);
   }, [snake]);
@@ -89,7 +105,26 @@ const Snake = () => {
               .fill(0)
               .map((_, j) => {
                 const key = `${i}-${j}`;
-                return <Cell key={key} occupied={snake.includes(key)} />;
+                return (
+                  <Cell key={key}>
+                    <CellContent
+                      type={
+                        key === failSpot
+                          ? "fail"
+                          : snake.includes(key)
+                            ? "snake"
+                            : key === itemL
+                              ? "itemL"
+                              : key === itemV
+                                ? "itemV"
+                                : "empty"
+                      }
+                      dir={dir}
+                    >
+                      {key === snake[snake.length - 1] && ">"}
+                    </CellContent>
+                  </Cell>
+                );
               })}
           </Row>
         ))}
