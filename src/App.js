@@ -1,5 +1,7 @@
 import React from "react";
 
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+
 import logo from "./logo.svg";
 import "./App.css";
 
@@ -24,4 +26,17 @@ function App() {
   );
 }
 
-export default App;
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+  },
+  {
+    path: "about",
+    element: <div>About</div>,
+  },
+]);
+
+const Home = () => <RouterProvider router={router} />;
+
+export default Home;
