@@ -1,10 +1,18 @@
 import React from "react";
 
-import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
+
+import { Wrapper, Header, Button } from "./styles";
 
 const Error = () => {
-  const location = useLocation();
-  return <div>{location.pathname}</div>;
+  return (
+    <Wrapper>
+      <Header>404</Header>
+      <Link to={"/"}>
+        <Button>Home</Button>
+      </Link>
+    </Wrapper>
+  );
 };
 
 export default Error;

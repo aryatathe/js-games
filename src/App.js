@@ -16,7 +16,7 @@ const router = createBrowserRouter(
     },
     ...gameList,
   ],
-  { baseName: "/js-games/" },
+  { basename: "/js-games" },
 );
 
 const App = () => <RouterProvider router={router} />;
