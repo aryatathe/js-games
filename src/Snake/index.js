@@ -134,7 +134,7 @@ const Snake = () => {
               })}
           </Row>
         ))}
-      {!failSpot && <ResetButton onClick={handleReset}>reset</ResetButton>}
+      {failSpot && <ResetButton onClick={handleReset}>reset</ResetButton>}
     </Wrapper>
   );
 };
