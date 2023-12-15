@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/js-games/static/css/main.ad75eacd.css",
-    "main.js": "/js-games/static/js/main.48423d87.js",
+    "main.js": "/js-games/static/js/main.57150ad2.js",
     "static/js/787.6c0ce577.chunk.js": "/js-games/static/js/787.6c0ce577.chunk.js",
     "static/media/mali-latin-500-normal.woff": "/js-games/static/media/mali-latin-500-normal.7940628b988484faedd1.woff",
     "static/media/mali-latin-300-normal.woff": "/js-games/static/media/mali-latin-300-normal.d63355bdbf1eb849be86.woff",
@@ -15,11 +15,11 @@
     "static/media/mali-latin-700-normal.woff2": "/js-games/static/media/mali-latin-700-normal.fba16041bee8c36e4cd2.woff2",
     "index.html": "/js-games/index.html",
     "main.ad75eacd.css.map": "/js-games/static/css/main.ad75eacd.css.map",
-    "main.48423d87.js.map": "/js-games/static/js/main.48423d87.js.map",
+    "main.57150ad2.js.map": "/js-games/static/js/main.57150ad2.js.map",
     "787.6c0ce577.chunk.js.map": "/js-games/static/js/787.6c0ce577.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.ad75eacd.css",
-    "static/js/main.48423d87.js"
+    "static/js/main.57150ad2.js"
   ]
 }
